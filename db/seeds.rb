@@ -8,7 +8,7 @@ Store.create!([
 ])
 ProductStore.create!([
   {product_id: 1, store_id: 1, price: 108, stock: 1},
-  {product_id: 1, store_id: 2, price: 108, stock: 2},
+  {product_id: 1, store_id: 2, price: 128, stock: 2},
   {product_id: 2, store_id: 1, price: 208, stock: 3},
   {product_id: 2, store_id: 2, price: 228, stock: 4},
 ])
