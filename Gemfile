@@ -15,6 +15,7 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'spring',        group: :development
 
 group :development, :test do
+  gem 'jazz_hands'
   gem 'spring-commands-rspec'
   gem 'rspec-rails'
   gem 'guard-rspec'
