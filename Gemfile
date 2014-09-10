@@ -16,6 +16,7 @@ gem 'spring',        group: :development
 gem 'grape'
 
 group :development, :test do
+  gem 'railroady'
   gem 'jazz_hands'
   gem 'spring-commands-rspec'
   gem 'rspec-rails'
@@ -23,6 +24,7 @@ group :development, :test do
   gem 'rb-fsevent' if `uname` =~ /Darwin/
   gem 'simplecov'
   gem 'factory_girl_rails'
+  gem 'pry-clipboard'
 end
 
 # Use ActiveModel has_secure_password
