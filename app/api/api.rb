@@ -8,12 +8,23 @@ class API < Grape::API
       # TODO: avoid raw sql
       sql = "select * from products, product_stores
                       where product_stores.product_id = products.id
-                      and store_id=#{params[:store_id]}"
+                      and store_id = #{params[:store_id]}"
       ActiveRecord::Base.connection.select(sql).to_a
     end
 
     get ':id' do
       Store.find(params[:id])
+    end
+  end
+
+  resource :product do
+    get do
+      # TODO: avoid raw sql
+      sql = "select * from product_stores, products
+                      where product_stores.product_id = products.id
+                      and barcode_id = #{params[:barcode_id]}
+                      and product_stores.store_id = #{params[:store_id]}"
+      ActiveRecord::Base.connection.select(sql).to_a
     end
   end
 
