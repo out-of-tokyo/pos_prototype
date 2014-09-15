@@ -31,13 +31,17 @@ class API < Grape::API
   resource :purchase do
     post do
       ProductStore.where(store_id: params[:store_id])
+      returns = []
 
       # TODO: create decremental method in product_store_controller
       params[:purchase].each do |product|
-        Product.find_by(barcode_id: product[:barcode_id])
-               .product_stores.find_by(store_id: params[:store_id])
-               .decrement!(:stock, product[:amount])
+        item = Product.find_by(barcode_id: product[:barcode_id])
+                      .product_stores.find_by(store_id: params[:store_id])
+        if item.decrement!(:stock, product[:amount].to_i)
+          returns << item
+        end
       end
+      returns
     end
   end
 end
