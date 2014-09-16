@@ -24,7 +24,7 @@ class API < Grape::API
                       where product_stores.product_id = products.id
                       and barcode_id = #{params[:barcode_id]}
                       and product_stores.store_id = #{params[:store_id]}"
-      ActiveRecord::Base.connection.select(sql).to_a
+      ActiveRecord::Base.connection.select(sql).first
     end
   end
 
