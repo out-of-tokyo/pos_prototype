@@ -28,6 +28,17 @@ class API < Grape::API
     end
   end
 
+  resource :newspapers do
+    get do
+      # TODO: Commonise query
+      sql = "select * from product_stores, products
+                      where product_stores.product_id = products.id
+                      and category = #{Product.categories[:newspaper]}
+                      and product_stores.store_id = #{params[:store_id]}"
+      ActiveRecord::Base.connection.select(sql).to_a
+    end
+  end
+
   resource :purchase do
     post do
       ProductStore.where(store_id: params[:store_id])
