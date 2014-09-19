@@ -5,10 +5,13 @@ describe API do
 
   describe 'Product' do
     let!(:product) { FactoryGirl.create(:product) }
-    let!(:product_store) { FactoryGirl.create(:product_store, product_id: product.id) }
+    let!(:store) { FactoryGirl.create(:store) }
+    let!(:product_store) { FactoryGirl.create(:product_store,
+                                              product_id: product.id,
+                                              store_id: store.id) }
     let(:response) do
-      get '/api/v0/product', { store_id: product_store.store_id,
-                               barcode_id: product.barcode_id }
+      get '/api/v0/product', { beacon_id: product_store.store.beacon_id,
+                               barcode_id: product_store.product.barcode_id }
     end
 
     it 'returns status 200' do
@@ -16,11 +19,11 @@ describe API do
     end
 
     it 'returns price' do
-      expect(JSON.load(response.body).first['price']).to eq(product_store.price)
+      expect(JSON.load(response.body)['price']).to eq(product_store.price)
     end
 
     it 'returns the amount of stocks' do
-      expect(JSON.load(response.body).first['stock']).to eq(product_store.stock)
+      expect(JSON.load(response.body)['stock']).to eq(product_store.stock)
     end
   end
 end
