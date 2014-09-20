@@ -5,14 +5,18 @@ describe API do
 
   describe 'Purchase' do
     let!(:product) { FactoryGirl.create(:product) }
-    let!(:product_store) { FactoryGirl.create(:product_store, product_id: product.id) }
+    let!(:store) { FactoryGirl.create(:store) }
+    let!(:product_store) { FactoryGirl.create(:product_store,
+                                              product_id: product.id,
+                                              store_id: store.id) }
+
     let(:response) do
-      post '/api/v0/purchase', { store_id: product_store.store_id,
-                                purchase: [{
-                                  barcode_id: product.barcode_id,
-                                  amount: 2,
-                                }]
-                              }
+      post '/api/v0/purchase', { beacon_id: product_store.store.beacon_id,
+                                 purchase: [{
+                                   barcode_id: product.barcode_id,
+                                   amount: 2,
+                                 }]
+                               }
     end
 
     it 'returns status 201' do
