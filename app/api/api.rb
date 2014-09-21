@@ -7,6 +7,24 @@ class API < Grape::API
     def store_id_from_beacon_id
       Store.find_by(beacon_id: params[:beacon_id]).id
     end
+
+    def find_item_by barcode_id, store_id
+      Product.find_by(barcode_id: barcode_id)
+             .product_stores.find_by(store_id: store_id)
+    end
+
+    def make_stock increment_or_decrement
+      items = []
+
+      # TODO: create decremental method in product_store_controller
+      params[:purchase].each do |product|
+        item = (find_item_by product[:barcode_id], store_id_from_beacon_id)
+        if item.send("#{increment_or_decrement}!", :stock, product[:amount].to_i)
+          items << item
+        end
+      end
+      items
+    end
   end
 
   resource :products do
@@ -47,18 +65,13 @@ class API < Grape::API
 
   resource :purchase do
     post do
-      ProductStore.where(store_id: store_id_from_beacon_id)
-      returns = []
+      make_stock 'decrement'
+    end
+  end
 
-      # TODO: create decremental method in product_store_controller
-      params[:purchase].each do |product|
-        item = Product.find_by(barcode_id: product[:barcode_id])
-                      .product_stores.find_by(store_id: store_id_from_beacon_id)
-        if item.decrement!(:stock, product[:amount].to_i)
-          returns << item
-        end
-      end
-      returns
+  resource :cancel_purchase do
+    post do
+      make_stock 'increment'
     end
   end
 end
