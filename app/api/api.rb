@@ -17,7 +17,7 @@ class API < Grape::API
       items = []
 
       # TODO: create decremental method in product_store_controller
-      params[:purchase].each do |product|
+      params[:products].each do |product|
         item = (find_item_by product[:barcode_id], store_id_from_beacon_id)
         if item.send("#{increment_or_decrement}!", :stock, product[:amount].to_i)
           items << item
