@@ -10,7 +10,7 @@ describe API do
                                               product_id: product.id,
                                               store_id: store.id) }
     let!(:purchaced_products) { { beacon_id: product_store.store.beacon_id,
-                                  purchase: [{
+                                  products: [{
                                     barcode_id: product.barcode_id,
                                     amount: 2,
                                   }]
