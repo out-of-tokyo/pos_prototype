@@ -29,10 +29,6 @@ describe API do
       it 'returns the amount of stocks' do
         expect(JSON.load(response_to_purchase.body).first['price']).to eq(product_store.price)
       end
-
-      it 'decrements the stocks' do
-        expect(JSON.load(response_to_purchase.body).first['stock']).to eq(FactoryGirl.build(:product_store).stock - 2)
-      end
     end
 
     context 'cancel purchase' do
@@ -46,10 +42,6 @@ describe API do
 
       it 'returns the amount of stocks' do
         expect(JSON.load(response_to_cancel_purchase.body).first['price']).to eq(product_store.price)
-      end
-
-      it 'decrements the stocks' do
-        expect(JSON.load(response_to_cancel_purchase.body).first['stock']).to eq(FactoryGirl.build(:product_store).stock + 2)
       end
     end
   end

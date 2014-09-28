@@ -13,17 +13,27 @@ class API < Grape::API
              .product_stores.find_by(store_id: store_id)
     end
 
+    def find_item_with_detail_by barcode_id, store_id
+      sql = "select * from product_stores, products
+             where product_stores.product_id = products.id
+             and barcode_id = #{barcode_id}
+             and product_stores.store_id = #{store_id_from_beacon_id}"
+      ActiveRecord::Base.connection.select(sql).first
+    end
+
     def make_stock increment_or_decrement
-      items = []
+      purchased_products = []
 
       # TODO: create decremental method in product_store_controller
       params[:products].each do |product|
+        purchased_product = find_item_with_detail_by product[:barcode_id],
+                                                     store_id_from_beacon_id
         item = (find_item_by product[:barcode_id], store_id_from_beacon_id)
         if item.send("#{increment_or_decrement}!", :stock, product[:amount].to_i)
-          items << item
+          purchased_products << purchased_product
         end
       end
-      items
+      purchased_products
     end
   end
 
@@ -43,12 +53,7 @@ class API < Grape::API
 
   resource :product do
     get do
-      # TODO: avoid raw sql
-      sql = "select * from product_stores, products
-                      where product_stores.product_id = products.id
-                      and barcode_id = #{params[:barcode_id]}
-                      and product_stores.store_id = #{store_id_from_beacon_id}"
-      ActiveRecord::Base.connection.select(sql).first
+      find_item_with_detail_by params[:barcode_id], store_id_from_beacon_id
     end
   end
 
