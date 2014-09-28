@@ -5,6 +5,9 @@ Product.create!([
   {name: "片山新聞", category: "newspaper"},
   {name: "Pringles サワークリームオニオン", category: "food", barcode_id: '038000846489'},
   {name: "午後の紅茶 ミルクティー", category: "drink", barcode_id: '4909411055783'},
+  {name: "サントリー 烏龍茶", category: "drink", barcode_id: '49152401'},
+  {name: "伊右衛門", category: "drink", barcode_id: '4901777258365'},
+  {name: "お〜いお茶", category: "drink", barcode_id: '4901085002605'},
 ])
 Store.create!([
   {name: "ローソン西早稲田店", beacon_id: "D87CEE67-C2C2-44D2-A847-B728CF8BAAAD"},
@@ -19,4 +22,7 @@ ProductStore.create!([
   {product_id: 4, store_id: 2, price: 428, stock: 15},
   {product_id: 5, store_id: 1, price: 148, stock: 15},
   {product_id: 6, store_id: 1, price: 156, stock: 15},
+  {product_id: 7, store_id: 1, price: 128, stock: 15},
+  {product_id: 8, store_id: 1, price: 148, stock: 15},
+  {product_id: 9, store_id: 1, price: 156, stock: 15},
 ])
